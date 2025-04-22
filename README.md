@@ -39,6 +39,8 @@ Monster
 Represents enemies that can be battled
 Has attributes like health and attack power
 
+Currently only 1 use of this feature, used when choosing the right path in the cave.
+
 
 Battle
 
