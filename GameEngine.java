@@ -88,7 +88,7 @@ public class GameEngine {
         undergroundRiver.addChoice(new Choice("Wade across the river", leftCavePath, "event_swept_away"));
         undergroundRiver.addChoice(new Choice("Go back", leftCavePath));
         
-        trollChamber.addChoice(new Choice("Try to sneak past the troll", insideCave, "event_troll_wakes"));
+        trollChamber.addChoice(new Choice("Fight the troll", null, "event_troll_wakes"));
         trollChamber.addChoice(new Choice("Look for another way around", crystalCavern));
         trollChamber.addChoice(new Choice("Go back", rightCavePath));
         
@@ -116,13 +116,14 @@ public class GameEngine {
         // Set starting location
         currentLocation = caveEntrance;
     }
-    
     public void start() {
         System.out.println("Welcome to the Adventure Game!");
         System.out.println("What is your name, adventurer?");
         String playerName = scanner.nextLine();
         player.setName(playerName);
         System.out.println("Good luck on your journey, " + player.getName() + "!");
+        System.out.println("You start with " + player.getHealth() + " health and " + player.getAttackPower() + " attack power.");
+        System.out.println(player.displayInventory());
         System.out.println();
         
         // Main game loop
@@ -195,17 +196,19 @@ public class GameEngine {
                     
                 case "ending_map_treasure":
                     System.out.println("\nYou push open the creaky door and step inside the cabin.");
-                    System.out.println("It's dusty and appears long abandoned, but on a table you find a map!");
-                    System.out.println("The map shows a secret entrance to the cave that leads directly to a treasure room.");
+                    System.out.println("It's dusty and appears to be quite worn, an old man appears to be making some tea.");
+                    System.out.println("The old man greets you and offers you a cup of his delicous Jasmine Tea.");
+                    System.out.println("He hands you a map the leads to treasure.");
+                    System.out.println("OLD MAN: In my youth, I searched long for this treasure but I am too Old now.");
                     System.out.println("Following the map, you locate the hidden entrance and find the treasure!");
                     System.out.println("\nTHE END - You win!");
                     return false;
                     
                 case "ending_crystal_treasure":
-                    System.out.println("\nYou notice a narrow passage to the side that might lead around the troll.");
-                    System.out.println("Squeezing through, you discover a chamber filled with glittering crystals!");
-                    System.out.println("The beautiful sight mesmerizes you, and you collect a few crystals as souvenirs.");
-                    System.out.println("Finding another exit, you make your way back to the cave entrance, treasures in hand.");
+                    System.out.println("\nYou start hand picking tons of these colorful cyrstals and putting them in your pouch");
+                    System.out.println("This cave is so beautiful that you start to think,");
+                    System.out.println("Man this is the perfect place to bleed out while waiting to give instructions to another adventurer...");
+                    System.out.println("But I mean you got some sick treasures so lets go home and become rich!");
                     System.out.println("\nTHE END - You win!");
                     return false;
                     
@@ -220,7 +223,38 @@ public class GameEngine {
                     System.out.println("\nYou attempt to tiptoe past the troll...");
                     System.out.println("But you accidentally kick a small stone, which clatters loudly!");
                     System.out.println("The troll wakes up with a roar and spots you!");
-                    System.out.println("You turn and run as fast as you can back the way you came.");
+                    
+                    // Create troll monster and start battle
+                    Monster troll = new Monster(
+                        "Cave Troll", 
+                        "A massive, green-skinned troll with bulging muscles and a terrible smell.",
+                        40, // health
+                        8   // attack power
+                    );
+                    
+                    Battle trollBattle = new Battle(player, troll, scanner);
+                    boolean battleWon = trollBattle.startBattle();
+                    
+                    if (!battleWon) {
+                        // Player lost battle and died
+                        return false;
+                    }
+                    
+                    // Player won battle
+                    System.out.println("\nWith the troll defeated, you can safely explore the chamber.");
+                    System.out.println("You notice a passage behind where the troll was standing.");
+                    System.out.println("You find a shield on the ground and add it to your inventory!");
+                    player.addItemToInventory("Shield");
+                    
+                    // Instead of running away, now the player defeated the troll
+                    // Let's add a special reward - a passage to the crystal cavern
+                    Location nextLocation = selectedChoice.getNextLocation();
+                    for (Location location : gameLocations) {
+                        if (location.getName().equals("Crystal Cavern")) {
+                            currentLocation = location;
+                            return true;
+                        }
+                    }
                     break;
                     
                 case "event_movement_inside":
