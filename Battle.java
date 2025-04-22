@@ -109,7 +109,7 @@ public class Battle {
                 
             case 3: // Run away
                 int escapeChance = random.nextInt(100);
-                if (escapeChance < 40) { // 40% chance to escape
+                if (escapeChance < 5) { // 5% chance to escape
                     System.out.println("You successfully escaped from the " + monster.getName() + "!");
                     player.takeDamage(0); // Just to make sure the battle loop exits
                     monster.takeDamage(monster.getHealth()); // Set monster health to 0 to end battle

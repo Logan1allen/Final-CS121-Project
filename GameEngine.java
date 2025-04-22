@@ -88,10 +88,11 @@ public class GameEngine {
         undergroundRiver.addChoice(new Choice("Wade across the river", leftCavePath, "event_swept_away"));
         undergroundRiver.addChoice(new Choice("Go back", leftCavePath));
         
-        trollChamber.addChoice(new Choice("Fight the troll", null, "event_troll_wakes"));
-        trollChamber.addChoice(new Choice("Look for another way around", crystalCavern));
+        trollChamber.addChoice(new Choice("Sneak past the Troll.", null, "event_troll_wakes"));
+        trollChamber.addChoice(new Choice("Look for another way around", null, "event_see_nothing"));
         trollChamber.addChoice(new Choice("Go back", rightCavePath));
         
+
         outsidePath.addChoice(new Choice("Keep following the path", cabin));
         outsidePath.addChoice(new Choice("Return to the cave entrance", caveEntrance));
         
@@ -99,7 +100,8 @@ public class GameEngine {
         cabin.addChoice(new Choice("Look through the windows", outsidePath, "event_movement_inside"));
         cabin.addChoice(new Choice("Return to the cave entrance", caveEntrance));
         
-        crystalCavern.addChoice(new Choice("Collect crystals and leave", caveEntrance, "ending_crystal_treasure"));
+        crystalCavern.addChoice(new Choice("Collect crystals", caveEntrance, "ending_crystal_treasure"));
+        crystalCavern.addChoice(new Choice("Leave", null, "just_leave"));
         
         // Add all locations to game locations list
         gameLocations.add(caveEntrance);
@@ -180,6 +182,12 @@ public class GameEngine {
         // Process special events
         if (event != null) {
             switch (event) {
+
+                case "event_see_nothing":
+                    System.out.println("Your eyes search the room for any other passage.");
+                    System.out.println("But unfortunately its too dark to see anything but the troll that lays asleep in your path.");
+                    break;
+
                 case "ending_go_home":
                     System.out.println("\nDeciding that adventure isn't for you today, you turn around and head back home.");
                     System.out.println("Perhaps another day you'll be brave enough to explore the cave.");
@@ -262,6 +270,13 @@ public class GameEngine {
                     System.out.println("You notice movement! Someone or something is in there!");
                     System.out.println("Startled, you back away from the cabin and decide to return to the cave entrance.");
                     break;
+
+                case "just_leave":
+                    System.out.println(player.getName() + ", I am unsure of why you would want to leave, but tis is your wish.");
+                    System.out.println("You decided that you don't want to collect your well deserved treasure and decided to head home.");
+                    System.out.println("Hopefully on your next Adventure you will collect your treasure because");
+                    System.out.println("now your wife and kids have no money for food and will starve. :(");
+                    return false;
             }
         }
         
