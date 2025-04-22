@@ -11,10 +11,10 @@ public class GameEngine {
     public GameEngine() {
         scanner = new Scanner(System.in);
         player = new Player();
-        initializeGame();
+        initGame();
     }
     
-    private void initializeGame() {
+    private void initGame() {
         // Create all locations
         gameLocations = new ArrayList<>();
         
@@ -96,7 +96,7 @@ public class GameEngine {
         outsidePath.addChoice(new Choice("Keep following the path", cabin));
         outsidePath.addChoice(new Choice("Return to the cave entrance", caveEntrance));
         
-        cabin.addChoice(new Choice("Enter the cabin", treasureChamber, "ending_map_treasure"));
+        cabin.addChoice(new Choice("Enter the cabin", caveEntrance, "event_riddle"));
         cabin.addChoice(new Choice("Look through the windows", outsidePath, "event_movement_inside"));
         cabin.addChoice(new Choice("Return to the cave entrance", caveEntrance));
         
@@ -202,21 +202,22 @@ public class GameEngine {
                     System.out.println("\nTHE END - You win!");
                     return false;
                     
-                case "ending_map_treasure":
+                case "event_riddle":
                     System.out.println("\nYou push open the creaky door and step inside the cabin.");
                     System.out.println("It's dusty and appears to be quite worn, an old man appears to be making some tea.");
                     System.out.println("The old man greets you and offers you a cup of his delicous Jasmine Tea.");
-                    System.out.println("He hands you a map the leads to treasure.");
+                    System.out.println("He hands you a a riddle that the leads to treasure.");
                     System.out.println("OLD MAN: In my youth, I searched long for this treasure but I am too Old now.");
-                    System.out.println("Following the map, you locate the hidden entrance and find the treasure!");
-                    System.out.println("\nTHE END - You win!");
-                    return false;
+                    System.out.println("The riddle states, Do whats right in order to shine bright!");
+                    System.out.println("OLD MAN: I could never put my finger on it, but the cave is probably a wise choice to start yer search.");
+                    break;
                     
                 case "ending_crystal_treasure":
                     System.out.println("\nYou start hand picking tons of these colorful cyrstals and putting them in your pouch");
                     System.out.println("This cave is so beautiful that you start to think,");
                     System.out.println("Man this is the perfect place to bleed out while waiting to give instructions to another adventurer...");
                     System.out.println("But I mean you got some sick treasures so lets go home and become rich!");
+                    System.out.println("So the riddle meant that you had to take the right path to bag all of the bright and shiny riches!");
                     System.out.println("\nTHE END - You win!");
                     return false;
                     
