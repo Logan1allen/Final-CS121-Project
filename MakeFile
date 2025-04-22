@@ -1,0 +1,14 @@
+# Compile all Java files
+compile:
+	javac *.java
+
+# Run the game
+run:
+	java AdventureGame
+
+# Compile and run in one command
+all: compile run
+
+# Clean up compiled files
+clean:
+	rm -f *.class
